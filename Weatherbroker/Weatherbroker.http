@@ -1,0 +1,8 @@
+@Weatherbroker_HostAddress = http://192.168.178.24:5296
+
+GET {{Weatherbroker_HostAddress}}/weatherforecast/
+Accept: application/json
+
+GET {{Weatherbroker_HostAddress}}/api/
+Accept: application/json
+###

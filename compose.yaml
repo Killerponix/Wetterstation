@@ -1,0 +1,7 @@
+﻿services:
+  weatherbroker:
+    image: weatherbroker
+    build:
+      context: .
+      dockerfile: Weatherbroker/Dockerfile
+
