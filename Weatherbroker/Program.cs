@@ -19,6 +19,15 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 //     options.UseMySql("server=192.168.178.28;database=weather;user=remote;password=123",new MySqlServerVersion(new Version(10,11))));
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(10, 11))));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 
 // Configure the HTTP request pipeline.
@@ -28,6 +37,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 app.UseRouting();
+app.UseCors("AllowAll");
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();

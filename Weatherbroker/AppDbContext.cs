@@ -5,6 +5,8 @@ using Weatherbroker.Models.weather_data;
 public class AppDbContext : DbContext
 {
     public DbSet<weather_raw> weather_raw { get; set; }
+    public DbSet<weather_day> weather_day { get; set; }
+    public DbSet<weather_stats> weather_stats { get; set; }
 
     private readonly IConfiguration _configuration;
 
