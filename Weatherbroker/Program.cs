@@ -28,6 +28,10 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    // Port wird durch appsettings.json geregelt
+});
 
 
 // Configure the HTTP request pipeline.
