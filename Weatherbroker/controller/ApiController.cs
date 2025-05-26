@@ -129,7 +129,31 @@ public class ApiController : ControllerBase
         return Ok(data);
     }
 
-    
+    [HttpGet("day-minmax")]
+    public async Task<IActionResult> GetTodayMinMax()
+    {
+        var today = DateTime.Today;
+
+        var entry = await _context.weather_day
+            .FirstOrDefaultAsync(w =>
+                w.day == today.Day &&
+                w.month == today.Month &&
+                w.year == today.Year);
+
+        if (entry == null)
+        {
+            return NotFound(new { message = "Keine Daten für heute gefunden." });
+        }
+
+        return Ok(new
+        {
+            Date = $"{entry.day}.{entry.month}.{entry.year}",
+            MinTemp = entry.minTemp,
+            MaxTemp = entry.maxTemp,
+            MinHum = entry.minHum,
+            MaxHum = entry.maxHum
+        });
+    }
 
 
 }
