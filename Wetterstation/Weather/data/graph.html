@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<head>
+<meta charset="utf-8">
+<style>
+	a:link {
+	color:blue;
+	}
+	a:visited {
+	color:purple;
+	}
+	a:hover[href] {color:red;
+			text-decoration: underline;
+	}
+	a:active[href] 
+	{
+	color:gray;
+	text-decoration: overline;
+}
+		body {					/*damit man kein weißen rand links und recht hat*/
+		margin:0%;
+		
+		}
+	
+		#header{
+		border: 1px red solid;
+		background-color:#fe0;
+		text-align:center;
+		padding: 1%;
+		position:fixed;
+		width:97.7%;
+		font-size:87%;
+		border-bottom: 5px red outset;
+		border-right:2px red solid;
+		
+		}
+		#main, #content, #margin {				/*damit alle abstände und rahmen verschwinden die bis hierhin gesetzt waren*/
+			margin: 0;
+			padding: 0;
+			border: 0px solid grey; 
+		}
+		
+		strong									/* Für alles was mit links und downloads zu tun hat aber kein block element sein darf */
+		{margin:1%;
+		border:0px double white;
+		padding:0%;
+		font-size: 18pt;
+		
+		}
+		p										/* größere schrift*/
+		{
+		font-size:115%;		
+		}
+		
+		
+		
+		#main {
+			margin: 0;
+			margin-top: 17%;
+			margin-left:4%;
+			margin-right:4%;
+			padding:  1%;
+			float: left;
+			width: 90%;
+			background-color:lightgray;
+			margin-bottom: 5%;
+			
+		}
+		#content {
+		}	
+	
+		#footer {
+			clear: both;
+			border: 1px solid black;
+			text-align:right;
+			background-color:white;
+			position:static;
+			width:99.9104946%;
+			bottom:0%;
+		margin:0%;
+		
+		}		
+		
+		}
+		em							/* Für ein abstandt zwischen Kontakt und Impressum und eine andere schriftart die man besser lesen kann */
+		{
+		margin-right:10px;
+		font-family:arial;
+		}
+    </style>
+    
+</head>
+
+<body>
+
+<div id="header">
+	<a href="index"><strong>Home</strong></a>
+<title> Wetterstation Garb </title>
+	<a href="graph"><strong>Verlauf</strong></a>
+	<a href="stats.html"><strong>Statistik</strong></a>
+</div>
+
+<div id="main">
+<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+
+<script>
+async function ladeDaten(){
+ try {
+        const response = await fetch("http://192.168.178.28:8080/api/monthly-averages");
+        const daten = await response.json();
+
+        const labels = daten.map(e => `${e.month}.${e.year}`);
+        const temps = daten.map(e => e.avgTemp);
+        const hums = daten.map(e => e.avgHum);
+
+new Chart('myChart', {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Ø Temperatur (°C)',
+                data: temps,
+                borderColor: 'red',
+                fill: false
+              },
+              {
+                label: 'Ø Luftfeuchtigkeit (%)',
+                data: hums,
+                borderColor: 'blue',
+                fill: false
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: 'top' },
+              title: { display: true, text: 'Monatliche Durchschnittswerte' }
+            }
+          }
+        });
+	}catch(err){
+	}
+}
+<!-->setInterval(ladeDaten, 1000);
+ladeDaten();
+</script>
+</div>
+</body>
+</html>
