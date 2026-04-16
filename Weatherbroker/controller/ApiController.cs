@@ -64,10 +64,6 @@ public class ApiController : ControllerBase
 
             var all = await _context.weather_raw.ToListAsync();
             stats.anz = all.Count;
-            // stats.maxTemp = Math.Max(stats.maxTemp, data.temperature);
-            // stats.minTemp = Math.Min(stats.minTemp, data.temperature);
-            // stats.maxHum = Math.Max(stats.maxHum, data.luftfeuchte);
-            // stats.minHum = Math.Min(stats.minHum, data.luftfeuchte);
 
             stats.maxTemp = all.Max(raw => raw.temperature);
             stats.minTemp = all.Min(raw =>raw.temperature );
@@ -76,7 +72,6 @@ public class ApiController : ControllerBase
             stats.avgTemp = all.Average(raw => raw.temperature);
             stats.avgHum =  (float) all.Average(raw => raw.luftfeuchte);
             await _context.SaveChangesAsync();
-            // Wenn du das letzte Element zurückgeben möchtest, kannst du das so machen:
             return Ok(new { message = "Daten gespeichert", data });
         }
     }
@@ -90,7 +85,8 @@ public class ApiController : ControllerBase
         return Ok(new
         {
             temp = data.temperature,
-            luft = data.luftfeuchte
+            luft = data.luftfeuchte,
+            t = data.time.ToString("dd.MM.yyyy, HH:mm:ss")
         });
     }
     
